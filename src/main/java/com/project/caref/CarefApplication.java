@@ -20,7 +20,7 @@ public class CarefApplication  implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		log.info("Initilize folder for uploarding file");
-		//storageService.deleteAll();
-		//storageService.init();
+		/* storageService.deleteOneFile();
+		storageService.init(); */
 	}
 }

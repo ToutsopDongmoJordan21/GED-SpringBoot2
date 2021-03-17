@@ -9,6 +9,7 @@ import com.project.caref.service.CarDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,11 @@ public class CarController {
     @GetMapping("/cars/{id}")
     public ResponseEntity<?> getCarById(@PathVariable(value = "id") Long carId) {
         return ResponseEntity.ok(carDetailsService.findOneCarById(carId));
+    }
+
+    @GetMapping("/cars/userCreated/{id}")
+    public ResponseEntity<?> getUserCreated(@PathVariable("id") Long userId) {
+        return ResponseEntity.ok(carDetailsService.findAllByCreatedBy(userId));
     }
 
     @PostMapping(value="/cars")

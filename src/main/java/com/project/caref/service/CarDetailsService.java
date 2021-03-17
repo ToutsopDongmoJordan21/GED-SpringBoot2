@@ -1,6 +1,5 @@
 package com.project.caref.service;
 
-import com.project.caref.exeption.ResourceNotFoundException;
 import com.project.caref.models.dto.CarResponseDto;
 import com.project.caref.files.dto.FileDto;
 import com.project.caref.files.services.FileService;
@@ -27,7 +26,8 @@ public class CarDetailsService {
     private final FileService fileService;
     private final  UserRepository userRepository;
 
-    public Car save(CarDto car){
+    public CarResponseDto save(CarDto car){
+        User user = userRepository.getOne(SecurityUtils.getCurrentUserId());
         Car newCar = new Car();
         newCar.setCarTitle(car.getCarTitle());
         newCar.setCarBrand(car.getCarBrand());
@@ -38,11 +38,9 @@ public class CarDetailsService {
         newCar.setCarSeating(car.getCarSeating());
         newCar.setCarPrice(car.getCarPrice());
         newCar.setCarAddedDate(new Date());
-
-        System.out.println("date is" + newCar.getCarAddedDate());
-
+        newCar.setUser(user);
         //save new car
-        newCar = carRepository.save(newCar);
+       newCar = carRepository.save(newCar);
 
         if(!car.getAccessors().isEmpty()) {
             Car finalNewCar = newCar;
@@ -54,8 +52,9 @@ public class CarDetailsService {
                 carAccessoireRepository.save(carAccessoire);
             });
         }
-        return carRepository.getOne(newCar.getId());
+        return findOneCarById(newCar.getId());
     }
+
 
     public CarResponseDto findOneCarById(Long carId) {
         Car car = carRepository.getOne(carId);
@@ -83,6 +82,11 @@ public class CarDetailsService {
 
     public List<CarResponseDto> findAllCar() {
         return carRepository.findAll().stream().map(buildListCarResponseDto()).collect(Collectors.toList());
+    }
+
+
+    public List<CarResponseDto> findAllByCreatedBy(Long userId) {
+        return carRepository.findAllByCreatedBy(userId).stream().map(buildListCarResponseDto()).collect(Collectors.toList());
     }
 
     private Function<Car, CarResponseDto> buildListCarResponseDto() {

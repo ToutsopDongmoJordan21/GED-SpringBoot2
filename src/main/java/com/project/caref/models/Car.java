@@ -50,6 +50,19 @@ public class Car extends AbstractIforce5Audit{
     @OneToMany
     private Set<CarAccessoire> carAccessoire = new HashSet<>();
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id",
+            referencedColumnName = "id")
+    private User user;
+
 
     public Car(Long id,
                        String carTitle,
