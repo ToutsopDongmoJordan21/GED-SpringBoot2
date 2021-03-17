@@ -1,3 +1,3 @@
-# CAREF backends
+# GED backends
 
-Back end de l'application CAREF
+Back end de l'application de GED (Gestion Electronique des Données)
